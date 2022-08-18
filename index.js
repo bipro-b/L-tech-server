@@ -33,6 +33,7 @@ async function run() {
     const usersCollection = database.collection("ussers");
 
     const reviewCollection = database.collection("review");
+    const assignCourseCollection = database.collection("assigncourse");
 
     //GET fetch courses data
 
@@ -40,6 +41,13 @@ async function run() {
       const courses = coursesCollection.find({});
       const course = await courses.toArray();
       res.send(course);
+    });
+
+    //Get assigned courses
+    app.get("/assigncourse", async (req, res) => {
+      const assigns = assignCourseCollection.find({});
+      const assign = await assigns.toArray();
+      res.send(assign);
     });
     // get single enroll
     app.get("/enroll", async (req, res) => {
@@ -83,6 +91,7 @@ async function run() {
       }
       res.json({ admin: isAdmin });
     });
+
     // update
 
     app.put("/users", async (req, res) => {
@@ -97,7 +106,7 @@ async function run() {
       );
       res.json(result);
     });
-    // admin
+    // add admin
 
     app.put("/users/admin", async (req, res) => {
       const user = req.body;
@@ -115,6 +124,12 @@ async function run() {
       res.json(result);
     });
 
+    // post assigning course
+    app.post("/assigncourse", async (req, res) => {
+      const assign = req.body;
+      const result = await assignCourseCollection.insertOne(assign);
+      res.json(result);
+    });
     // POST enrolling data
 
     app.post("/enroll", async (req, res) => {
