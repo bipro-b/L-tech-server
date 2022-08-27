@@ -31,7 +31,6 @@ async function run() {
     const enrollCollection = database.collection("enroll");
 
     const usersCollection = database.collection("ussers");
-    const teacherCollection = database.collection("teachers");
     const reviewCollection = database.collection("review");
     const assignCourseCollection = database.collection("assigncourse");
 
@@ -40,7 +39,7 @@ async function run() {
     app.get("/courses", async (req, res) => {
       const courses = coursesCollection.find({});
       const course = await courses.toArray();
-      res.send(course);
+      ~res.send(course);
     });
 
     //Get assigned courses
