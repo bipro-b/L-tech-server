@@ -90,6 +90,18 @@ async function run() {
       }
       res.json({ admin: isAdmin });
     });
+    // Get teacher
+
+    app.get("/user/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const user = await usersCollection.findOne(query);
+      let isTeacher = false;
+      if (user?.keep == "teacher") {
+        isTeacher = true;
+      }
+      res.json({ teacher: isTeacher });
+    });
 
     // update
 
@@ -111,6 +123,15 @@ async function run() {
       const user = req.body;
       const filter = { email: user.email };
       const updateDoc = { $set: { role: "admin" } };
+      const result = await usersCollection.updateOne(filter, updateDoc);
+      res.json(result);
+    });
+
+    // add teacher
+    app.put("/user/teacher", async (req, res) => {
+      const user = req.body;
+      const filter = { email: user.email };
+      const updateDoc = { $set: { keep: "teacher" } };
       const result = await usersCollection.updateOne(filter, updateDoc);
       res.json(result);
     });
